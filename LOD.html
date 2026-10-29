@@ -1,0 +1,697 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LORD OF DYNASTY</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: #0b0e14;
+      color: #e6edf3;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* ============================================================
+       GLOBAL
+       ============================================================ */
+    .screen {
+      display: none;
+      animation: fadeIn 0.35s ease;
+    }
+
+    .screen.active {
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(12px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 1.5rem 1rem;
+      width: 100%;
+      flex: 1;
+    }
+
+    /* ============================================================
+       HEADER (used on all screens)
+       ============================================================ */
+    .global-header {
+      background: linear-gradient(135deg, #10141c, #0b0e14);
+      border-bottom: 2px solid #2a2f3a;
+      padding: 1.2rem 1rem;
+      text-align: center;
+    }
+
+    .global-header h1 {
+      font-size: 2.6rem;
+      font-weight: 900;
+      letter-spacing: 5px;
+      text-transform: uppercase;
+      background: linear-gradient(90deg, #f5e6c8, #d4af37, #f5e6c8, #b8860b, #f5e6c8);
+      background-size: 200% auto;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      animation: shimmer 5s linear infinite;
+    }
+
+    @keyframes shimmer {
+      0%   { background-position: 0% center; }
+      100% { background-position: 200% center; }
+    }
+
+    .global-header p {
+      margin-top: 0.3rem;
+      font-size: 0.85rem;
+      color: #6b7280;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+    }
+
+    /* ============================================================
+       LANDING  (Screen 1)
+       ============================================================ */
+    #landingScreen {
+      justify-content: center;
+      align-items: center;
+      background: radial-gradient(ellipse at center top, #141a24 0%, #0b0e14 70%);
+    }
+
+    #landingScreen .container {
+      max-width: 480px;
+      text-align: center;
+    }
+
+    .landing-logo {
+      font-size: 3.5rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .landing-sub {
+      color: #8b949e;
+      margin-bottom: 2rem;
+      font-size: 0.95rem;
+    }
+
+    .user-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 0.6rem;
+      margin-bottom: 1.5rem;
+      max-height: 320px;
+      overflow-y: auto;
+      padding-right: 4px;
+    }
+
+    .user-grid::-webkit-scrollbar {
+      width: 4px;
+    }
+    .user-grid::-webkit-scrollbar-thumb {
+      background: #2a2f3a;
+      border-radius: 4px;
+    }
+
+    .user-btn {
+      background: #161c27;
+      border: 1px solid #2a2f3a;
+      border-radius: 10px;
+      padding: 0.85rem 1.2rem;
+      color: #e6edf3;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+      text-align: left;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .user-btn:hover {
+      border-color: #d4af37;
+      background: #1c2332;
+      transform: translateX(4px);
+    }
+
+    .user-btn .avatar {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #d4af37, #b8860b);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 0.9rem;
+      color: #0b0e14;
+      flex-shrink: 0;
+    }
+
+    .user-btn .user-status {
+      margin-left: auto;
+      font-size: 0.7rem;
+      color: #6b7280;
+    }
+
+    .add-user-area {
+      display: flex;
+      gap: 0.5rem;
+    }
+
+    .add-user-area input {
+      flex: 1;
+      background: #0b0e14;
+      border: 1px solid #2a2f3a;
+      border-radius: 8px;
+      padding: 0.7rem 0.9rem;
+      color: #e6edf3;
+      font-size: 0.9rem;
+    }
+
+    .add-user-area input:focus {
+      outline: none;
+      border-color: #d4af37;
+    }
+
+    .btn {
+      padding: 0.7rem 1.2rem;
+      border: none;
+      border-radius: 8px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .btn-gold {
+      background: linear-gradient(135deg, #d4af37, #b8860b);
+      color: #0b0e14;
+    }
+
+    .btn-gold:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 20px rgba(212, 175, 55, 0.3);
+    }
+
+    .btn-outline {
+      background: transparent;
+      border: 1px solid #2a2f3a;
+      color: #8b949e;
+    }
+
+    .btn-outline:hover {
+      border-color: #d4af37;
+      color: #e6edf3;
+    }
+
+    .btn-sm {
+      padding: 0.4rem 0.8rem;
+      font-size: 0.75rem;
+    }
+
+    .btn-danger-sm {
+      background: #da3633;
+      color: #fff;
+      padding: 0.4rem 0.7rem;
+      font-size: 0.75rem;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+
+    .btn-danger-sm:hover {
+      background: #f85149;
+    }
+
+    .empty-users {
+      color: #484f58;
+      padding: 2rem 0;
+      font-size: 0.95rem;
+    }
+
+    /* ============================================================
+       DASHBOARD  (Screen 2)
+       ============================================================ */
+    .dashboard-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1.5rem;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+
+    .dashboard-top .user-welcome {
+      font-size: 1.1rem;
+    }
+
+    .dashboard-top .user-welcome strong {
+      color: #d4af37;
+    }
+
+    .dashboard-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+    }
+
+    .dash-card {
+      background: #161c27;
+      border: 1px solid #2a2f3a;
+      border-radius: 12px;
+      padding: 1.2rem;
+      transition: border 0.2s;
+    }
+
+    .dash-card:hover {
+      border-color: #3a4050;
+    }
+
+    .dash-card.full {
+      grid-column: 1 / -1;
+    }
+
+    .dash-card label {
+      display: block;
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: #6b7280;
+      margin-bottom: 0.3rem;
+    }
+
+    .dash-card .value {
+      font-size: 1.4rem;
+      font-weight: 700;
+    }
+
+    .dash-card .value.gold {
+      color: #d4af37;
+    }
+
+    .dash-card .value.green {
+      color: #3fb950;
+    }
+
+    .dash-card .value.red {
+      color: #f85149;
+    }
+
+    .dash-card input,
+    .dash-card select {
+      width: 100%;
+      background: #0b0e14;
+      border: 1px solid #2a2f3a;
+      border-radius: 8px;
+      padding: 0.6rem 0.8rem;
+      color: #e6edf3;
+      font-size: 1rem;
+      margin-top: 0.2rem;
+    }
+
+    .dash-card input:focus,
+    .dash-card select:focus {
+      outline: none;
+      border-color: #d4af37;
+    }
+
+    .dash-card .helper {
+      font-size: 0.75rem;
+      color: #6b7280;
+      margin-top: 0.3rem;
+    }
+
+    .btn-group {
+      display: flex;
+      gap: 0.75rem;
+      flex-wrap: wrap;
+      margin-top: 1.5rem;
+    }
+
+    /* ============================================================
+       RESPONSIVE
+       ============================================================ */
+    @media (max-width: 540px) {
+      .global-header h1 {
+        font-size: 1.6rem;
+        letter-spacing: 2px;
+      }
+
+      .dashboard-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .landing-logo {
+        font-size: 2.5rem;
+      }
+    }
+
+    /* ============================================================
+       FOOTER
+       ============================================================ */
+    .global-footer {
+      text-align: center;
+      padding: 1rem;
+      color: #484f58;
+      font-size: 0.75rem;
+      border-top: 1px solid #1a1f2a;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ============================================================
+       SCREEN 1 — LANDING / LOGIN
+       ============================================================ -->
+  <div id="landingScreen" class="screen active">
+    <div class="global-header">
+      <h1>LORD OF DYNASTY</h1>
+      <p>⚔ Kerajaan Digital ⚔</p>
+    </div>
+
+    <div class="container">
+      <div class="landing-logo">👑</div>
+      <p class="landing-sub">Pilih ID atau buat akun baru untuk masuk</p>
+
+      <div id="userList" class="user-grid"></div>
+
+      <div class="add-user-area">
+        <input type="text" id="newUserId" placeholder="Nama ID baru..." maxlength="30">
+        <button class="btn btn-gold" id="addUserBtn">Buat & Masuk</button>
+      </div>
+      <p style="font-size:0.75rem;color:#484f58;margin-top:0.5rem;">Tekan Enter untuk membuat ID baru</p>
+    </div>
+
+    <div class="global-footer">LORD OF DYNASTY</div>
+  </div>
+
+  <!-- ============================================================
+       SCREEN 2 — DASHBOARD
+       ============================================================ -->
+  <div id="dashboardScreen" class="screen">
+    <div class="global-header">
+      <h1>LORD OF DYNASTY</h1>
+      <p>⚔ Dashboard Anggota ⚔</p>
+    </div>
+
+    <div class="container">
+      <div class="dashboard-top">
+        <div class="user-welcome">Selamat datang, <strong id="dashUserName">-</strong></div>
+        <button class="btn btn-outline btn-sm" id="logoutBtn">← Keluar</button>
+      </div>
+
+      <div class="dashboard-grid">
+        <!-- Nama -->
+        <div class="dash-card">
+          <label>Nama</label>
+          <input type="text" id="fieldNama" placeholder="Nama lengkap" maxlength="50">
+        </div>
+
+        <!-- Pangkat -->
+        <div class="dash-card">
+          <label>Pangkat</label>
+          <select id="fieldPangkat">
+            <option value="">-- Pilih --</option>
+            <option value="Leader">Leader</option>
+            <option value="Co-Leader">Co-Leader</option>
+            <option value="Elder">Elder</option>
+            <option value="Member">Member</option>
+            <option value="Recruit">Recruit</option>
+            <option value="Veteran">Veteran</option>
+          </select>
+        </div>
+
+        <!-- Kas -->
+        <div class="dash-card">
+          <label>Kas (Saldo)</label>
+          <input type="number" id="fieldKas" placeholder="0" min="0">
+          <div class="helper">Total uang kas yang dimiliki</div>
+        </div>
+
+        <!-- Absen WB -->
+        <div class="dash-card">
+          <label>Absen WB</label>
+          <select id="fieldAbsenWB">
+            <option value="Hadir">✅ Hadir</option>
+            <option value="Izin">📌 Izin</option>
+            <option value="Alpha">❌ Alpha</option>
+            <option value="Sakit">🩺 Sakit</option>
+          </select>
+          <div class="helper">Status absen war broke / kegiatan</div>
+        </div>
+
+        <!-- Tunggakan Kas (full width) -->
+        <div class="dash-card full">
+          <label>Tunggakan Kas</label>
+          <input type="number" id="fieldTunggakan" placeholder="0" min="0">
+          <div class="helper">Jumlah kas yang masih menunggak / kurang</div>
+        </div>
+
+        <!-- Tombol simpan -->
+        <div class="dash-card full">
+          <div class="btn-group">
+            <button class="btn btn-gold" id="saveBtn">💾 Simpan Data</button>
+            <button class="btn btn-outline" id="resetFieldBtn">↻ Reset</button>
+          </div>
+          <div class="helper" id="saveStatus" style="margin-top:0.5rem;"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="global-footer">LORD OF DYNASTY</div>
+  </div>
+
+  <script>
+    // ============================================================
+    //  STORAGE
+    // ============================================================
+    const USERS_KEY = 'lord_dynasty_users';    // { userId: { nama, pangkat, kas, absenWB, tunggakan } }
+    const LIST_KEY  = 'lord_dynasty_list';     // [userId, userId, ...]
+
+    function getUsers() {
+      return JSON.parse(localStorage.getItem(USERS_KEY)) || {};
+    }
+
+    function getList() {
+      return JSON.parse(localStorage.getItem(LIST_KEY)) || [];
+    }
+
+    function saveAll(users, list) {
+      localStorage.setItem(USERS_KEY, JSON.stringify(users));
+      localStorage.setItem(LIST_KEY, JSON.stringify(list));
+    }
+
+    // ============================================================
+    //  DOM REFS
+    // ============================================================
+    const landingScreen = document.getElementById('landingScreen');
+    const dashScreen    = document.getElementById('dashboardScreen');
+    const userListEl    = document.getElementById('userList');
+    const newUserIdInp  = document.getElementById('newUserId');
+    const addUserBtn    = document.getElementById('addUserBtn');
+
+    const dashUserName   = document.getElementById('dashUserName');
+    const fieldNama      = document.getElementById('fieldNama');
+    const fieldPangkat   = document.getElementById('fieldPangkat');
+    const fieldKas       = document.getElementById('fieldKas');
+    const fieldAbsenWB   = document.getElementById('fieldAbsenWB');
+    const fieldTunggakan = document.getElementById('fieldTunggakan');
+    const saveBtn        = document.getElementById('saveBtn');
+    const saveStatus     = document.getElementById('saveStatus');
+    const resetFieldBtn  = document.getElementById('resetFieldBtn');
+    const logoutBtn      = document.getElementById('logoutBtn');
+
+    let currentUserId = null;
+
+    // ============================================================
+    //  RENDER LANDING
+    // ============================================================
+    function renderLanding() {
+      const list = getList();
+      const users = getUsers();
+
+      if (list.length === 0) {
+        userListEl.innerHTML = `<div class="empty-users">Belum ada anggota. Buat ID baru di bawah.</div>`;
+        return;
+      }
+
+      let html = '';
+      list.forEach((id, idx) => {
+        const data = users[id] || {};
+        const initial = (id[0] || '?').toUpperCase();
+        const status = data.nama ? (data.nama.slice(0, 18)) : '—';
+        html += `
+          <div style="display:flex;gap:0.4rem;align-items:stretch;">
+            <button class="user-btn" style="flex:1;" onclick="loginUser('${escapeStr(id)}')">
+              <span class="avatar">${initial}</span>
+              <span>${escapeHtml(id)}</span>
+              <span class="user-status">${escapeHtml(status)}</span>
+            </button>
+            <button class="btn-danger-sm" onclick="deleteUser('${escapeStr(id)}')" title="Hapus anggota">✕</button>
+          </div>`;
+      });
+      userListEl.innerHTML = html;
+    }
+
+    function escapeHtml(str) {
+      const d = document.createElement('div');
+      d.textContent = str;
+      return d.innerHTML;
+    }
+
+    function escapeStr(str) {
+      return str.replace(/'/g, "\\'");
+    }
+
+    // ============================================================
+    //  LOGIN / LOGOUT
+    // ============================================================
+    window.loginUser = function(userId) {
+      currentUserId = userId;
+      const users = getUsers();
+      const data = users[userId] || {};
+
+      // Isi dashboard
+      dashUserName.textContent = userId;
+      fieldNama.value      = data.nama || '';
+      fieldPangkat.value   = data.pangkat || '';
+      fieldKas.value       = data.kas ?? '';
+      fieldAbsenWB.value   = data.absenWB || 'Hadir';
+      fieldTunggakan.value = data.tunggakan ?? '';
+
+      saveStatus.textContent = '';
+
+      // Pindah screen
+      landingScreen.classList.remove('active');
+      dashScreen.classList.add('active');
+    };
+
+    function logout() {
+      currentUserId = null;
+      dashScreen.classList.remove('active');
+      landingScreen.classList.add('active');
+      renderLanding();
+      newUserIdInp.value = '';
+      newUserIdInp.focus();
+    }
+
+    logoutBtn.addEventListener('click', logout);
+
+    // ============================================================
+    //  TAMBAH USER
+    // ============================================================
+    function addNewUser() {
+      const id = newUserIdInp.value.trim();
+      if (!id) { alert('Masukkan nama ID terlebih dahulu.'); return; }
+
+      let list = getList();
+      let users = getUsers();
+
+      if (users[id]) {
+        // Sudah ada -> langsung login
+        loginUser(id);
+        newUserIdInp.value = '';
+        return;
+      }
+
+      users[id] = { nama: '', pangkat: '', kas: 0, absenWB: 'Hadir', tunggakan: 0 };
+      list.push(id);
+      saveAll(users, list);
+
+      loginUser(id);
+      newUserIdInp.value = '';
+    }
+
+    addUserBtn.addEventListener('click', addNewUser);
+    newUserIdInp.addEventListener('keydown', function(e) {
+      if (e.key === 'Enter') addNewUser();
+    });
+
+    // ============================================================
+    //  HAPUS USER
+    // ============================================================
+    window.deleteUser = function(userId) {
+      if (!confirm(`Hapus anggota "${userId}" beserta seluruh datanya?`)) return;
+
+      let list = getList();
+      let users = getUsers();
+
+      delete users[userId];
+      list = list.filter(id => id !== userId);
+      saveAll(users, list);
+
+      if (currentUserId === userId) logout();
+      else renderLanding();
+    };
+
+    // ============================================================
+    //  SIMPAN DATA DASHBOARD
+    // ============================================================
+    saveBtn.addEventListener('click', function() {
+      if (!currentUserId) return;
+
+      const nama      = fieldNama.value.trim();
+      const pangkat   = fieldPangkat.value;
+      const kas       = fieldKas.value === '' ? 0 : Number(fieldKas.value);
+      const absenWB   = fieldAbsenWB.value;
+      const tunggakan = fieldTunggakan.value === '' ? 0 : Number(fieldTunggakan.value);
+
+      if (!nama) {
+        saveStatus.textContent = '⚠️ Nama tidak boleh kosong.';
+        saveStatus.style.color = '#f85149';
+        return;
+      }
+
+      let users = getUsers();
+      users[currentUserId] = { nama, pangkat, kas, absenWB, tunggakan };
+      localStorage.setItem(USERS_KEY, JSON.stringify(users));
+
+      saveStatus.textContent = '✅ Data berhasil disimpan!';
+      saveStatus.style.color = '#3fb950';
+
+      // Update welcome
+      dashUserName.textContent = currentUserId;
+
+      setTimeout(() => {
+        saveStatus.textContent = '';
+      }, 2500);
+    });
+
+    // ============================================================
+    //  RESET FIELD
+    // ============================================================
+    resetFieldBtn.addEventListener('click', function() {
+      if (!currentUserId) return;
+      fieldNama.value = '';
+      fieldPangkat.value = '';
+      fieldKas.value = '';
+      fieldAbsenWB.value = 'Hadir';
+      fieldTunggakan.value = '';
+      saveStatus.textContent = 'Form dikosongkan (data belum tersimpan).';
+      saveStatus.style.color = '#8b949e';
+      setTimeout(() => { saveStatus.textContent = ''; }, 2000);
+    });
+
+    // ============================================================
+    //  INIT
+    // ============================================================
+    renderLanding();
+  </script>
+
+</body>
+</html>
